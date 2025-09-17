@@ -1,53 +1,13 @@
-/* Global Styles */
+/* Extra custom styles */
+
 body {
   scroll-behavior: smooth;
 }
 
-/* Navbar Hover Effect */
 nav ul li a {
-  transition: color 0.3s ease, border-bottom 0.3s ease;
-}
-nav ul li a:hover {
-  border-bottom: 2px solid #a855f7; /* purple underline */
+  transition: color 0.3s ease;
 }
 
-/* Card Hover Animation */
-.bg-gray-800 {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.bg-gray-800:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
-}
-
-/* Gradient Title Animation */
-h1, h2, h3 {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-h1 {
-  background-image: linear-gradient(to right, #a855f7, #ec4899);
-}
-h2 {
-  background-image: linear-gradient(to right, #facc15, #f97316);
-}
-h3 {
-  background-image: linear-gradient(to right, #38bdf8, #3b82f6);
-}
-
-/* Contact Form */
-form input, form textarea {
-  border: 2px solid #444;
-}
-form input:focus, form textarea:focus {
-  outline: none;
-  border-color: #a855f7;
-  box-shadow: 0 0 10px #a855f7;
-}
-form button {
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-form button:hover {
-  transform: scale(1.05);
+footer {
+  font-size: 14px;
 }
