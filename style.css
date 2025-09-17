@@ -35,6 +35,36 @@ body {
 .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 .card, .movie-card { background: #222; padding: 20px; border-radius: 8px; text-align: center; }
 .movie-card img { width: 100%; border-radius: 8px; }
+.search-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  margin: 20px auto;
+  display: block;
+}
+
+.filters {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filters button {
+  margin: 5px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #ffcc00;
+  font-weight: bold;
+}
+
+.filters button:hover {
+  background: #ffaa00;
+}
 
 /* Form */
 .form { display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: auto; }

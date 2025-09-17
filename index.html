@@ -18,7 +18,20 @@
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="menu-toggle" id="menuToggle">☰</div>
-  </nav>
+  </nav><!-- Search Box -->
+<section class="section">
+  <input type="text" id="searchInput" placeholder="Search movies..." class="search-box">
+</section>
+
+<!-- Filter Buttons -->
+<div class="filters">
+  <button onclick="filterMovies('all')">All</button>
+  <button onclick="filterMovies('action')">Action</button>
+  <button onclick="filterMovies('comedy')">Comedy</button>
+  <button onclick="filterMovies('horror')">Horror</button>
+  <button onclick="filterMovies('sci-fi')">Sci-Fi</button>
+</div>
+
 
   <!-- Hero Banner -->
   <header class="hero">
