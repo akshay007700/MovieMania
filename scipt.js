@@ -1,29 +1,14 @@
-// Mobile Menu Toggle
+// Mobile menu toggle
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
 
-if (menuToggle) {
+if (menuToggle && navLinks) {
   menuToggle.addEventListener("click", () => {
     navLinks.classList.toggle("active");
-  });// 🔍 Search Functionality
-const searchInput = document.getElementById("searchInput");
-if (searchInput) {
-  searchInput.addEventListener("keyup", () => {
-    let filter = searchInput.value.toLowerCase();
-    let movies = document.querySelectorAll(".movie-card");
-
-    movies.forEach(movie => {
-      let title = movie.querySelector("h3").textContent.toLowerCase();
-      if (title.includes(filter)) {
-        movie.style.display = "";
-      } else {
-        movie.style.display = "none";
-      }
-    });
   });
 }
 
-// 🎭 Filter Movies by Category
+// Filter movies
 function filterMovies(category) {
   let movies = document.querySelectorAll(".movie-card");
   movies.forEach(movie => {
@@ -33,6 +18,4 @@ function filterMovies(category) {
       movie.style.display = "none";
     }
   });
-}
-
 }
