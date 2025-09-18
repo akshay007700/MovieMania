@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieMania - Your Ultimate Movie Destination</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: rgba(10, 10, 10, 0.95);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid #ff6b00;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #ff6b00, #ff922b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .logo-icon {
+            color: #ff6b00;
+            font-size: 36px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            font-size: 16px;
+        }
+        
+        nav ul li a:hover {
+            color: #ff6b00;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #1a1a1a;
+            border-radius: 30px;
+            padding: 10px 20px;
+            width: 320px;
+            border: 1px solid #333;
+        }
+        
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            width: 100%;
+            padding: 5px;
+            font-size: 16px;
+        }
+        
+        .search-btn {
+            background: transparent;
+            border: none;
+            color: #ff6b00;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        
+        .user-actions a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .user-actions a:hover {
+            color: #ff6b00;
+        }
+        
+        /* Page Container */
+        .page-container {
+            display: none;
+            padding: 40px 5%;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .page-active {
+            display: block;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 600px;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 650px;
+        }
+        
+        .hero-content h2 {
+            font-size: 52px;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        
+        .hero-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #ff6b00;
+            color: #fff;
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #ff922b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 107, 0, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #ff6b00;
+        }
+        
+        .btn-outline:hover {
+            background: #ff6b00;
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background: #ff6b00;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        
+        /* Categories Section */
+        .categories {
+            padding: 60px 5%;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+            text-align: center;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: #ff6b00;
+            border-radius: 10px;
+        }
+        
+        .category-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            background: #1a1a1a;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            border: 1px solid #333;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: #ff6b00;
+            transform: translateY(-2px);
+        }
+        
+        /* Movies Grid */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 30px;
+        }
+        
+        .movie-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        
+        .movie-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .movie-img {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+        }
+        
+        .movie-info {
+            padding: 20px;
+        }
+        
+        .movie-title {
+            font-size: 20px;
+            margin-bottom: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .movie-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .rating {
+            color: #ff6b00;
+            font-weight: 600;
+        }
+        
+        .movie-desc {
+            color: #bbb;
+            margin-top: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .download-options {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .download-btn {
+            background: #ff6b00;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            flex: 1;
+            margin: 0 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .download-btn:hover {
+            background: #ff922b;
+        }
+        
+        /* Download Page */
+        .download-header {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?ixlib=rb-4.0.3') no-repeat center center/cover;
+            padding: 80px 5%;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .download-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .download-option-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .download-option-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .download-option-card i {
+            font-size: 48px;
+            color: #ff6b00;
+            margin-bottom: 20px;
+        }
+        
+        /* DMCA Page */
+        .dmca-content {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 40px;
+            line-height: 1.8;
+        }
+        
+        .dmca-content h3 {
+            color: #ff6b00;
+            margin: 25px 0 15px;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+        }
+        
+        /* Footer */
+        footer {
+            background: #0c0c0c;
+            padding: 60px 5% 20px;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #ff6b00;
+        }
+        
+        .footer-column p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #ff6b00;
+            transform: translateX(5px);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            color: #fff;
+            text-align: center;
+            line-height: 40px;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background: #ff6b00;
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero-content h2 {
+                font-size: 42px;
+            }
+            
+            nav ul li {
+                margin: 0 10px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            nav ul {
+                margin-bottom: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .search-box {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .user-actions {
+                margin-top: 15px;
+            }
+            
+            .hero {
+                height: 500px;
+                text-align: center;
+            }
+            
+            .hero-content h2 {
+                font-size: 36px;
+            }
+            
+            .featured-badge {
+                top: 20px;
+                right: 20px;
+            }
+            
+            .movies-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .download-options {
+                flex-direction: column;
+            }
+            
+            .download-btn {
+                margin: 5px 0;
+            }
+            
+            .download-options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-content h2 {
+                font-size: 28px;
+            }
+            
+            .hero-content p {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .movies-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-filters {
+                gap: 10px;
+            }
+            
+            .filter-btn {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-film logo-icon"></i>
+            <h1>MovieMania</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="downloads">Downloads</a></li>
+                <li><a href="#" class="nav-link" data-page="plugins">Plugins</a></li>
+                <li><a href="#" class="nav-link" data-page="dmca">DMCA</a></li>
+                <li><a href="#" class="nav-link" data-page="search">Search</a></li>
+            </ul>
+        </nav>
+        
+        <div class="search-box">
+            <input type="text" placeholder="Search for movies..." id="searchInput">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="user-actions">
+            <a href="#"><i class="fas fa-user"></i></a>
+            <a href="#"><i class="fas fa-heart"></i></a>
+            <a href="#"><i class="fas fa-bell"></i></a>
+        </div>
+    </header>
+    
+    <!-- Home Page -->
+    <div id="home" class="page-container page-active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <span class="featured-badge">Featured</span>
+            <div class="hero-content">
+                <h2>Experience Cinema Like Never Before</h2>
+                <p>Discover thousands of movies and TV shows. Stream in HD quality anytime, anywhere.</p>
+                <a href="#" class="btn">Get Started</a>
+            </div>
+        </section>
+        
+        <!-- Categories Section -->
+        <section class="categories">
+            <h2 class="section-title">Popular Movies</h2>
+            
+            <div class="category-filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Action</button>
+                <button class="filter-btn">Comedy</button>
+                <button class="filter-btn">Drama</button>
+                <button class="filter-btn">Horror</button>
+                <button class="filter-btn">Sci-Fi</button>
+                <button class="filter-btn">2023 Releases</button>
+                <button class="filter-btn">Top Rated</button>
+            </div>
+            
+            <div class="movies-grid">
+                <!-- Movie 1 -->
+                <div class="movie-card">
+                    <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Movie" class="movie-img">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Spider-Man: No Way Home</h3>
+                        <div class="movie-meta">
+                            <span>2021</span>
+                            <span class="rating"><i class="fas fa-star"></i> 8.5</span>
+                        </div>
+                        <p class="movie-desc">With Spider-Man's identity now revealed, Peter asks Doctor Strange for help. When a spell goes wrong, dangerous foes from other worlds start to appear.</p>
+                        <div class="download-options">
+                            <button class="download-btn">HD Download</button>
+                            <button class="download-btn">4K Download</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Movie 2 -->
+                <div class="movie-card">
+                    <img src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Movie" class="movie-img">
+                    <div class="movie-info">
+                        <h3 class="movie-title">The Batman</h3>
+                        <div class="movie-meta">
+                            <span>2022</span>
+                            <span class="rating"><i class="fas fa-star"></i> 8.3</span>
+                        </div>
+                        <p class="movie-desc">When a killer targets Gotham's elite with a series of sadistic games, Batman must investigate the city's hidden corruption and question his family's involvement.</p>
+                        <div class="download-options">
+                            <button class="download-btn">HD Download</button>
+                            <button class="download-btn">4K Download</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Movie 3 -->
+                <div class="movie-card">
+                    <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Movie" class="movie-img">
+                    <div class="movie-info">
+                        <h3 class="movie-title">John Wick: Chapter 4</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="rating"><i class="fas fa-star"></i> 8.7</span>
+                        </div>
+                        <p class="movie-desc">John Wick uncovers a path to defeating The High Table. But before he can earn his freedom, Wick must face off against a new enemy with powerful alliances.</p>
+                        <div class="download-options">
+                            <button class="download-btn">HD Download</button>
+                            <button class="download-btn">4K Download</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Movie 4 -->
+                <div class="movie-card">
+                    <img src="https://images.unsplash.com/photo-1598890777037-a5d244d697d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Movie" class="movie-img">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Fast X</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="rating"><i class="fas fa-star"></i> 7.2</span>
+                        </div>
+                        <p class="movie-desc">Dom Toretto and his family are targeted by the vengeful son of drug kingpin Hernan Reyes.</p>
+                        <div class="download-options">
+                            <button class="download-btn">HD Download</button>
+                            <button class="download-btn">4K Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Downloads Page -->
+    <div id="downloads" class="page-container">
+        <div class="download-header">
+            <h2 class="section-title">Download Center</h2>
+            <p>Download your favorite movies in various formats and qualities</p>
+        </div>
+        
+        <div class="download-options-grid">
+            <div class="download-option-card">
+                <i class="fas fa-download"></i>
+                <h3>HD Movies</h3>
+                <p>Download movies in high definition quality (720p)</p>
+                <button class="btn">Browse HD Movies</button>
+            </div>
+            
+            <div class="download-option-card">
+                <i class="fas fa-film"></i>
+                <h3>Full HD Movies</h3>
+                <p>Download movies in full high definition quality (1080p)</p>
+                <button class="btn">Browse Full HD Movies</button>
+            </div>
+            
+            <div class="download-option-card">
+                <i class="fas fa-video"></i>
+                <h3>4K Ultra HD</h3>
+                <p>Download movies in 4K Ultra HD quality (2160p)</p>
+                <button class="btn">Browse 4K Movies</button>
+            </div>
+        </div>
+        
+        <div class="categories">
+            <h2 class="section-title">Latest Downloads</h2>
+            
+            <div class="movies-grid">
+                <!-- Movie 1 -->
+                <div class="movie-card">
+                    <img src="https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Movie" class="movie-img">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Avatar: The Way of Water</h3>
+                        <div class="movie-meta">
+                            <span>2022</span>
+                            <span class="rating"><i class="fas fa-star"></i> 8.0</span>
+                        </div>
+                        <div class="download-options">
+                            <button class="download-btn">720p</button>
+                            <button class="download-btn">1080p</button>
+                            <button class="download-btn">4K</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Movie 2 -->
+                <div class="movie-card">
+                    <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Movie" class="movie-img">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Oppenheimer</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="rating"><i class="fas fa-star"></i> 8.8</span>
+                        </div>
+                        <div class="download-options">
+                            <button class="download-btn">720p</button>
+                            <button class="download-btn">1080p</button>
+                            <button class="download-btn">4K</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Movie 3 -->
+                <div class="movie-card">
+                    <img src="https://images.unsplash.com/photo-1682686581427-7c80ab60e3f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Movie" class="movie-img">
+                    <div class="movie-info">
+                        <h3 class="movie-title">Mission: Impossible 7</h3>
+                        <div class="movie-meta">
+                            <span>2023</span>
+                            <span class="rating"><i class="fas fa-star"></i> 8.1</span>
+                        </div>
+                        <div class="download-options">
+                            <button class="download-btn">720p</button>
+                            <button class="download-btn">1080p</button>
+                            <button class="download-btn">4K</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Plugins Page -->
+    <div id="plugins" class="page-container">
+        <div class="download-header">
+            <h2 class="section-title">Plugins & Tools</h2>
+            <p>Enhance your movie experience with our plugins and tools</p>
+        </div>
+        
+        <div class="download-options-grid">
+            <div class="download-option-card">
+                <i class="fas fa-window-restore"></i>
+                <h3>Browser Extension</h3>
+                <p>Download our browser extension for quick access to movies</p>
+                <button class="btn">Download Extension</button>
+            </div>
+            
+            <div class="download-option-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobile App</h3>
+                <p>Download our mobile app for iOS and Android devices</p>
+                <button class="btn">Download App</button>
+            </div>
+            
+            <div class="download-option-card">
+                <i class="fas fa-desktop"></i>
+                <h3>Desktop Client</h3>
+                <p>Download our desktop client for Windows and macOS</p>
+                <button class="btn">Download Client</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- DMCA Page -->
+    <div id="dmca" class="page-container">
+        <h2 class="section-title">DMCA Policy</h2>
+        
+        <div class="dmca-content">
+            <p>MovieMania respects the intellectual property rights of others and expects its users to do the same. In accordance with the Digital Millennium Copyright Act of 1998, the text of which may be found on the U.S. Copyright Office website at http://www.copyright.gov/legislation/dmca.pdf, MovieMania will respond expeditiously to claims of copyright infringement committed using the MovieMania service that are reported to the MovieMania Designated Copyright Agent identified in the sample notice below.</p>
+            
+            <h3>Copyright Infringement Notification</h3>
+            <p>To file a copyright infringement notification with us, you will need to send a written communication that includes substantially the following (please consult your legal counsel or see Section 512(c)(3) of the DMCA to confirm these requirements):</p>
+            
+            <ol>
+                <li>A physical or electronic signature of a person authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.</li>
+                <li>Identification of the copyrighted work claimed to have been infringed, or, if multiple copyrighted works at a single online site are covered by a single notification, a representative list of such works at that site.</li>
+                <li>Identification of the material that is claimed to be infringing or to be the subject of infringing activity and that is to be removed or access to which is to be disabled, and information reasonably sufficient to permit the service provider to locate the material.</li>
+                <li>Information reasonably sufficient to permit the service provider to contact the complaining party, such as an address, telephone number, and, if available, an electronic mail address at which the complaining party may be contacted.</li>
+                <li>A statement that the complaining party has a good faith belief that use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law.</li>
+                <li>A statement that the information in the notification is accurate, and under penalty of perjury, that the complaining party is authorized to act on behalf of the owner of an exclusive right that is allegedly infringed.</li>
+            </ol>
+            
+            <h3>Contact Information</h3>
+            <p>Please contact our Designated Copyright Agent at:</p>
+            <p>Email: dmca@moviemania.com</p>
+        </div>
+    </div>
+    
+    <!-- Search Page -->
+    <div id="search" class="page-container">
+        <h2 class="section-title">Search Movies</h2>
+        
+        <div class="search-box" style="width: 100%; max-width: 600px; margin: 0 auto 40px;">
+            <input type="text" placeholder="Enter movie title, actor, or genre...">
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+        
+        <div class="category-filters">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Movies</button>
+            <button class="filter-btn">TV Shows</button>
+            <button class="filter-btn">Actors</button>
+            <button class="filter-btn">Directors</button>
+        </div>
+        
+        <div class="movies-grid">
+            <!-- Search results would appear here -->
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                <i class="fas fa-search" style="font-size: 60px; color: #ff6b00; margin-bottom: 20px;"></i>
+                <h3>Search for your favorite movies</h3>
+                <p>Enter a title in the search box above to find movies</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>MovieMania</h3>
+                <p>Your ultimate destination for movies and TV shows. Stream in HD quality anytime, anywhere.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="downloads">Downloads</a></li>
+                    <li><a href="#" class="nav-link" data-page="plugins">Plugins</a></li>
+                    <li><a href="#" class="nav-link" data-page="dmca">DMCA</a></li>
+                    <li><a href="#" class="nav-link" data-page="search">Search</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Genres</h3>
+                <ul>
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Comedy</a></li>
+                    <li><a href="#">Drama</a></li>
+                    <li><a href="#">Horror</a></li>
+                    <li><a href="#">Sci-Fi</a></li>
+                    <li><a href="#">Thriller</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Account</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 MovieMania. All rights reserved. This is a demo website for educational purposes only.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Page Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page-container');
+            
+            // Handle navigation clicks
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetPage = this.getAttribute('data-page');
+                    
+                    // Hide all pages
+                    pages.forEach(page => {
+                        page.classList.remove('page-active');
+                    });
+                    
+                    // Show target page
+                    document.getElementById(targetPage).classList.add('page-active');
+                    
+                    // Scroll to top
+                    window.scrollTo(0, 0);
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.querySelector('.search-btn');
+            
+            searchBtn.addEventListener('click', function() {
+                if (searchInput.value.trim() !== '') {
+                    // Switch to search page
+                    pages.forEach(page => {
+                        page.classList.remove('page-active');
+                    });
+                    document.getElementById('search').classList.add('page-active');
+                    
+                    // Set search value
+                    document.querySelector('#search .search-box input').value = searchInput.value;
+                    
+                    // Scroll to top
+                    window.scrollTo(0, 0);
+                }
+            });
+            
+            // Allow Enter key for search
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+            
+            // Download buttons
+            const downloadButtons = document.querySelectorAll('.download-btn');
+            
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const movieTitle = this.closest('.movie-card').querySelector('.movie-title').textContent;
+                    alert(`This is a demo. In a real application, this would download "${movieTitle}".`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
