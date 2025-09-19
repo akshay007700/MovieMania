@@ -1,0 +1,1 @@
+console.log('MovieMania site loaded');
